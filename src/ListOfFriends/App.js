@@ -36,6 +36,12 @@ export default function App() {
 
 function Friends() {
   const friends = initialFriends;
+  const [show, setShow] = useState(false);
+
+  function handleShowForm() {
+    setShow((show) => !show);
+  }
+
   return (
     <>
       <ul>
@@ -43,9 +49,14 @@ function Friends() {
           <Friend friend={friend} />
         ))}
       </ul>
+      {show && <FormAddFriend />}
+      <Button onClick={handleShowForm}>
+        {!handleShowForm ? 'Close' : 'Add Friend'}
+      </Button>
     </>
   );
 }
+
 function Friend({ friend }) {
   return (
     <>
@@ -59,10 +70,41 @@ function Friend({ friend }) {
               You owe {friend.name} {Math.abs(friend.balance)}€
             </p>
           )}
-          {friend.balance > 0 && <p className="green">{friend.balance}</p>}
-          {friend.balance === 0 && <p className="zero">{friend.balance}</p>}
+          {friend.balance > 0 && (
+            <p className="green">
+              {friend.name} owe you {friend.balance}
+            </p>
+          )}
+          {friend.balance === 0 && (
+            <p className="zero">
+              You and {friend.name} {friend.balance}
+            </p>
+          )}
         </div>
+        <Button>Select</Button>
       </li>
+    </>
+  );
+}
+
+function Button({ children, onClick }) {
+  return (
+    <button className="button" onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
+function FormAddFriend() {
+  return (
+    <>
+      <form className="form-add-friend">
+        <label>👫 Friend name</label>
+        <input type="text" />
+
+        <label>🌄 Image URL</label>
+        <input type="text" />
+      </form>
     </>
   );
 }
